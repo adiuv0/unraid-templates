@@ -9,12 +9,13 @@ Unraid Docker templates for adiuv0's containers.
 
 ## Using these templates
 
-In Unraid, go to Docker. At the bottom of the page, in **Template repositories**, add:
+Unraid 6.10 removed the Template repositories setting, and these templates aren't listed in Community Applications. To install one, copy its XML onto the flash drive. Open the Unraid terminal (the `>_` icon at the top right of the web UI) and run, for example:
 
 ```
-https://github.com/adiuv0/unraid-templates
+wget -O /boot/config/plugins/dockerMan/templates-user/my-events-dashboard.xml \
+  https://raw.githubusercontent.com/adiuv0/unraid-templates/main/templates/events-dashboard.xml
 ```
 
-Click Save. Then go to Docker → Add Container, open the **Template** dropdown, and pick the container.
+Then go to Docker → Add Container, open the **Template** dropdown, and pick the container under User templates.
 
-To use a single template without adding the repository, copy its XML file to `/boot/config/plugins/dockerMan/templates-user/my-<name>.xml`.
+Name the file `my-<Name>.xml`, where `<Name>` is the template's `<Name>` value (`my-GameVault.xml` for GameVault). Unraid saves your settings to that same file when you click Apply, so you get one entry in the dropdown instead of two.
