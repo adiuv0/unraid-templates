@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>events-dashboard</Name>
+  <Repository>adiuv0/events-dashboard</Repository>
+  <Registry>https://hub.docker.com/r/adiuv0/events-dashboard</Registry>
+  <Branch>
+    <Tag>latest</Tag>
+    <TagDescription>Latest build of main</TagDescription>
+  </Branch>
+  <Network>bridge</Network>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/adiuv0/events-dashboard/issues</Support>
+  <Project>https://github.com/adiuv0/events-dashboard</Project>
+  <Overview>
+    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. Scrapes venue sites and event calendars once a day, merges duplicate listings, drops sports, and serves one filterable page.
+  </Overview>
+  <Category>Productivity: Tools:Utilities</Category>
+  <WebUI>http://[IP]:[PORT:6557]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/adiuv0/unraid-templates/main/templates/events-dashboard.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/adiuv0/unraid-templates/main/icons/events-dashboard.png</Icon>
+  <ExtraParams>--restart unless-stopped</ExtraParams>
+  <Description>
+    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. About 45 sources are scraped daily: event-calendar feeds where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot.
+  </Description>
+
+  <!-- Port -->
+  <Config
+    Name="Web UI Port"
+    Target="6557"
+    Default="6557"
+    Mode="tcp"
+    Description="Port for the dashboard."
+    Type="Port"
+    Display="always"
+    Required="true"
+    Mask="false"
+  >6557</Config>
+
+  <!-- Volumes -->
+  <Config
+    Name="App Data"
+    Target="/data"
+    Default="/mnt/user/appdata/events-dashboard"
+    Mode="rw"
+    Description="Stores the event database, the extraction cache and the generated page. Use your appdata share."
+    Type="Path"
+    Display="always"
+    Required="true"
+    Mask="false"
+  >/mnt/user/appdata/events-dashboard</Config>
+
+  <!-- Required Environment Variables -->
+  <Config
+    Name="Anthropic API Key"
+    Target="ANTHROPIC_API_KEY"
+    Default=""
+    Description="Used to read venue pages that have no feed. Create one at console.anthropic.com. Without it, only feed-based and recurring sources run."
+    Type="Variable"
+    Display="always"
+    Required="false"
+    Mask="true"
+  ></Config>
+
+  <!-- Tuning -->
+  <Config
+    Name="Extraction Model"
+    Target="EVENTS_LLM_MODEL"
+    Default="claude-opus-5-5"
+    Description="Claude model used to read venue pages. claude-haiku-5-5 is much cheaper."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false"
+  >claude-opus-5-5</Config>
+
+  <Config
+    Name="Scrape Hour"
+    Target="SCRAPE_HOUR"
+    Default="6"
+    Description="Hour of the day (0-23, container timezone) for the daily scrape. A scrape also runs when the container starts."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false"
+  >6</Config>
+
+  <Config
+    Name="Timezone"
+    Target="TZ"
+    Default="America/Los_Angeles"
+    Description="Container timezone. Sets when the daily scrape runs and how dates are shown."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false"
+  >America/Los_Angeles</Config>
+</Container>
