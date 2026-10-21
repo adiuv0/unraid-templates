@@ -66,13 +66,13 @@
   <Config
     Name="Extraction Model"
     Target="EVENTS_LLM_MODEL"
-    Default="claude-opus-5-5"
-    Description="Claude model that reads venue pages without a feed. claude-haiku-5-5 is about 40 times cheaper per token."
+    Default="claude-haiku-5-5"
+    Description="Claude model that reads venue pages without a feed. Set claude-opus-5-5 for the most accurate (and about 40 times pricier) reading."
     Type="Variable"
     Display="advanced"
     Required="false"
     Mask="false"
-  >claude-opus-5-5</Config>
+  >claude-haiku-5-5</Config>
 
   <Config
     Name="Re-read Interval (days)"
