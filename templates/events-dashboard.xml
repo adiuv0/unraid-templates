@@ -66,13 +66,24 @@
   <Config
     Name="Extraction Model"
     Target="EVENTS_LLM_MODEL"
-    Default="claude-opus-5-5"
-    Description="Claude model used to read venue pages. claude-haiku-5-5 is much cheaper."
+    Default="claude-haiku-5-5"
+    Description="Claude model that reads venue pages without a feed. Haiku 5.5 is about 40 times cheaper than Opus 5.5 (claude-opus-5-5) and is plenty for pulling dates out of a listing."
     Type="Variable"
     Display="advanced"
     Required="false"
     Mask="false"
-  >claude-opus-5-5</Config>
+  >claude-haiku-5-5</Config>
+
+  <Config
+    Name="Re-read Interval (days)"
+    Target="LLM_REFRESH_DAYS"
+    Default="3"
+    Description="Minimum days between Claude re-reads of a venue page whose text changed. Unchanged pages are never re-read. Set 1 to re-read changed pages every day."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false"
+  >3</Config>
 
   <Config
     Name="Scrape Hour"
