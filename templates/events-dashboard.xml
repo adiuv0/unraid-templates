@@ -21,7 +21,7 @@
   <Icon>https://raw.githubusercontent.com/adiuv0/unraid-templates/main/icons/events-dashboard.png</Icon>
   <ExtraParams>--restart unless-stopped</ExtraParams>
   <Description>
-    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. About 45 sources are scraped daily: event-calendar feeds where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot.
+    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. About 45 sources are scraped daily: event-calendar feeds where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot. An optional MCP connector lets Claude answer questions like "what's on in SF this weekend?" from your events.
   </Description>
 
   <!-- Port -->
@@ -36,6 +36,18 @@
     Required="true"
     Mask="false"
   >6557</Config>
+
+  <Config
+    Name="MCP Connector Port"
+    Target="6558"
+    Default="6558"
+    Mode="tcp"
+    Description="Port for the MCP connector that lets Claude answer questions from your events (endpoint /mcp). It stays off until Connector Password or Connector Token is set. Point your reverse proxy at this port, not at the dashboard's."
+    Type="Port"
+    Display="always"
+    Required="false"
+    Mask="false"
+  >6558</Config>
 
   <!-- Volumes -->
   <Config
@@ -58,6 +70,40 @@
     Description="Used to read venue pages that have no feed. Create one at console.anthropic.com. Without it, only feed-based and recurring sources run."
     Type="Variable"
     Display="always"
+    Required="false"
+    Mask="true"
+  ></Config>
+
+  <!-- MCP connector -->
+  <Config
+    Name="Connector Public URL"
+    Target="MCP_PUBLIC_URL"
+    Default=""
+    Description="The public HTTPS address of the MCP connector port, without /mcp, e.g. https://events.example.com or a Tailscale Funnel address. Needed for claude.ai, Claude Desktop and the phone app, which reach the connector from Anthropic's servers. In Claude, add this address plus /mcp as a custom connector."
+    Type="Variable"
+    Display="always"
+    Required="false"
+    Mask="false"
+  ></Config>
+
+  <Config
+    Name="Connector Password"
+    Target="MCP_PASSWORD"
+    Default=""
+    Description="Asked once on the sign-in page when you connect Claude. At least 12 characters; use a long random one. Changing it signs every connected Claude out. Don't put a reverse proxy login in front of /mcp: Claude can only sign in with this page."
+    Type="Variable"
+    Display="always"
+    Required="false"
+    Mask="true"
+  ></Config>
+
+  <Config
+    Name="Connector Token"
+    Target="MCP_TOKEN"
+    Default=""
+    Description="Optional fixed bearer token for clients set up with a header, such as Claude Code on your home network or tailnet (Authorization: Bearer ...). At least 24 characters; generate one with: openssl rand -hex 24"
+    Type="Variable"
+    Display="advanced"
     Required="false"
     Mask="true"
   ></Config>
