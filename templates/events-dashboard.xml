@@ -13,7 +13,7 @@
   <Support>https://github.com/adiuv0/events-dashboard/issues</Support>
   <Project>https://github.com/adiuv0/events-dashboard</Project>
   <Overview>
-    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. Scrapes venue sites and event calendars once a day, merges duplicate listings, drops sports, and serves one filterable page.
+    Personal calendar of theatre, Broadway, gallery, festival and civic events in Sacramento and San Francisco. Scrapes venue sites and event calendars once a day, merges duplicate listings, drops sports, and serves one filterable page.
   </Overview>
   <Category>Productivity: Tools:Utilities</Category>
   <WebUI>http://[IP]:[PORT:6557]/</WebUI>
@@ -21,7 +21,7 @@
   <Icon>https://raw.githubusercontent.com/adiuv0/unraid-templates/main/icons/events-dashboard.png</Icon>
   <ExtraParams>--restart unless-stopped</ExtraParams>
   <Description>
-    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. About 45 sources are scraped daily: event-calendar feeds where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot. An optional MCP connector lets Claude answer questions like "what's on in SF this weekend?" from your events.
+    Personal calendar of theatre, Broadway, gallery, festival and civic events (council meetings, public lectures) in Sacramento and San Francisco. About 50 sources are scraped daily: event-calendar feeds and structured page data where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot. An optional MCP connector lets Claude answer questions like "what's on in SF this weekend?" from your events.
   </Description>
 
   <!-- Port -->
@@ -55,7 +55,7 @@
     Target="/data"
     Default="/mnt/user/appdata/events-dashboard"
     Mode="rw"
-    Description="Stores the event database, the extraction cache and the generated page. Use your appdata share."
+    Description="Stores the event database, the extraction cache, the generated page, your saved plans and the MCP connector's sign-ins. Use your appdata share."
     Type="Path"
     Display="always"
     Required="true"
@@ -67,7 +67,7 @@
     Name="Anthropic API Key"
     Target="ANTHROPIC_API_KEY"
     Default=""
-    Description="Used to read venue pages that have no feed. Create one at console.anthropic.com. Without it, only feed-based and recurring sources run."
+    Description="Used to read venue pages that have no feed. Create one at console.anthropic.com. Without it, feeds, recurring events and venue pages that embed structured event data still run; the other venue pages are skipped."
     Type="Variable"
     Display="always"
     Required="false"
