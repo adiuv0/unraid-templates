@@ -21,7 +21,7 @@
   <Icon>https://raw.githubusercontent.com/adiuv0/unraid-templates/main/icons/events-dashboard.png</Icon>
   <ExtraParams>--restart unless-stopped</ExtraParams>
   <Description>
-    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. About 45 sources are scraped daily: event-calendar feeds where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot. An optional MCP connector lets Claude answer questions like "what's on in SF this weekend?" from your events.
+    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. About 45 sources are scraped daily: event-calendar feeds where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot, and has its own sign-in for use away from home. An optional MCP connector lets Claude answer questions like "what's on in SF this weekend?" from your events.
   </Description>
 
   <!-- Port -->
@@ -30,7 +30,7 @@
     Target="6557"
     Default="6557"
     Mode="tcp"
-    Description="Port for the dashboard. It has no login: keep it on your home network or tailnet, or behind your reverse proxy's login. Anyone who reaches it can read and change your saved plans."
+    Description="Port for the dashboard. Without a Dashboard Password it only answers your home network. With one it has its own sign-in and can go behind a reverse proxy (an HTTP proxy host with HTTPS, on its own subdomain). Never forward this port on your router directly."
     Type="Port"
     Display="always"
     Required="true"
@@ -42,7 +42,7 @@
     Target="6558"
     Default="6558"
     Mode="tcp"
-    Description="Port for the MCP connector that lets Claude answer questions from your events (endpoint /mcp). It stays off until Connector Password or Connector Token is set. Point your reverse proxy at this port, not at the dashboard's."
+    Description="Port for the MCP connector that lets Claude answer questions from your events (endpoint /mcp). It stays off until Connector Password or Connector Token is set. Behind a reverse proxy, give it a subdomain of its own, separate from the dashboard's."
     Type="Port"
     Display="always"
     Required="false"
@@ -72,6 +72,29 @@
     Display="always"
     Required="false"
     Mask="true"
+  ></Config>
+
+  <!-- Dashboard sign-in -->
+  <Config
+    Name="Dashboard Password"
+    Target="DASHBOARD_PASSWORD"
+    Default=""
+    Description="Turns on the dashboard's sign-in page, which is what lets you open it from outside your home network (through a reverse proxy with HTTPS, or Tailscale Serve). At least 12 characters; use a long random one (openssl rand -base64 24) and let your browser remember it. Each browser signs in once and stays signed in. Changing the password signs every browser out. Empty: the dashboard only answers your home network and refuses everything else."
+    Type="Variable"
+    Display="always"
+    Required="false"
+    Mask="true"
+  ></Config>
+
+  <Config
+    Name="Home Networks"
+    Target="HOME_NETWORKS"
+    Default=""
+    Description="Optional. Networks whose browsers skip the sign-in when they connect straight to the dashboard port, e.g. 192.168.1.0/24 (comma-separated; 'private' means every private range). Leave empty and, once a password is set, every browser signs in once, at home too. That is the safe default: behind a reverse proxy the dashboard can't always tell home from outside. Requests that come through a proxy always have to sign in."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false"
   ></Config>
 
   <!-- MCP connector -->
