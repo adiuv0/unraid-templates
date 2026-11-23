@@ -21,7 +21,7 @@
   <Icon>https://raw.githubusercontent.com/adiuv0/unraid-templates/main/icons/events-dashboard.png</Icon>
   <ExtraParams>--restart unless-stopped</ExtraParams>
   <Description>
-    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. About 45 sources are scraped daily: event-calendar feeds where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot, and has its own sign-in for use away from home. An optional MCP connector lets Claude answer questions like "what's on in SF this weekend?" from your events.
+    Personal calendar of theatre, Broadway, gallery and festival events in Sacramento and San Francisco. About 45 sources are scraped daily: event-calendar feeds where venues have them, and Claude reads the remaining venue pages. The dashboard shows a source health table so broken sources are easy to spot, and has its own sign-in for use away from home. The This week tab opens with recommended picks for the weekend, which can also come to your phone as a notification on Thursday evening. An optional MCP connector lets Claude answer questions like "what's on in SF this weekend?" from your events.
   </Description>
 
   <!-- Port -->
@@ -67,7 +67,7 @@
     Name="Anthropic API Key"
     Target="ANTHROPIC_API_KEY"
     Default=""
-    Description="Used to read venue pages that have no feed. Create one at console.anthropic.com. Without it, only feed-based and recurring sources run."
+    Description="Used to read venue pages that have no feed, and to choose the weekly picks on the This week tab. Create one at console.anthropic.com. Without it, only feed-based and recurring sources run, and the picks are ranked by rules alone."
     Type="Variable"
     Display="always"
     Required="false"
@@ -155,6 +155,39 @@
   >3</Config>
 
   <Config
+    Name="Picks Day"
+    Target="PICKS_DAY"
+    Default="thu"
+    Description="Day of the week the weekend's picks are sent as a notification to the devices that turned notifications on (This week tab, over HTTPS): mon, tue, wed, thu, fri, sat or sun."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false"
+  >thu</Config>
+
+  <Config
+    Name="Picks Hour"
+    Target="PICKS_HOUR"
+    Default="18"
+    Description="Hour of that day (0-23, container timezone) the notification goes out. If the container is off at that hour it is sent when it is back, up to 18 hours later."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false"
+  >18</Config>
+
+  <Config
+    Name="Picks Model"
+    Target="PICKS_MODEL"
+    Default="claude-opus-5-5"
+    Description="Claude model that chooses the weekly picks from the shortlist and writes why. About one call a day, roughly 20 to 30 cents each with claude-opus-5-5; claude-haiku-5-5 costs under a cent and chooses less well."
+    Type="Variable"
+    Display="advanced"
+    Required="false"
+    Mask="false"
+  >claude-opus-5-5</Config>
+
+  <Config
     Name="Scrape Hour"
     Target="SCRAPE_HOUR"
     Default="6"
@@ -169,7 +202,7 @@
     Name="Timezone"
     Target="TZ"
     Default="America/Los_Angeles"
-    Description="Container timezone. Sets when the daily scrape runs and how dates are shown."
+    Description="Container timezone. Sets when the daily scrape runs, when the weekly notification goes out and how dates are shown."
     Type="Variable"
     Display="advanced"
     Required="false"
